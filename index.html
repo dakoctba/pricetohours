@@ -18,8 +18,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Assistant&display=swap" rel="stylesheet">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6135599490918760"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6135599490918760" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
 <style>
     * {
@@ -28,15 +28,43 @@
     .container {
         padding: 20px;
     }
+    form {
+        padding: 20px;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+    }
+    .center {
+        text-align: center;
+    }
+    .result span {
+        color: #ff6600;
+        font-weight: bold;
+    }
 </style>
 <body>
 
-<div class="container">
+<div class="container" id="app">
     <div class="row">
         <div class="column">
-            <p align="center"><img src="time-is-money.png" height="100px"></p>
+            <p class="center"><img src="./assets/images/time-is-money.png" height="100px"></p>
 
-            <h1 align="center">Price to hours worked calculator</h1>
+            <h1 class="center">Price to hours worked calculator</h1>
+
+            <form action="">
+                <div class="row">
+                    <div class="column">
+                        <label for="cost"><small><i>Cost of the item you want to buy</i></small></label>
+                        <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy">
+                    </div>
+                    <div class="column">
+                        <label for="wage"><small><i>Your hourly wage</i></small></label>
+                        <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage">
+                    </div>
+                </div>
+                <div class="result center">
+                    <h3>You need to work <span>{{ hours }} hours</span> to buy this item (about <span>{{ days }} days</span>)</h3>
+                </div>
+            </form>
 
             <p>If you ever wondered how many hours you would have to work to buy something you want, this price-to-hours worked calculator has an answer for you.</p>
 
@@ -66,9 +94,18 @@
     </div>
 </div>
 
-<p>
-    <center>
-        <small><small><a href="https://www.flaticon.com/free-icons/time-is-money" title="time-is-money icons">Time-is-money icons created by Iconjam - Flaticon</a></small></small></p>
-    </center>
+<p class="center"><small><small><a href="https://www.flaticon.com/free-icons/time-is-money" title="time-is-money icons">Time-is-money icons created by Iconjam - Flaticon</a></small></small></p>
+<script>
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+            hours: '20',
+            days: '2',
+        }
+      }
+    }).mount('#app')
+</script>
 </body>
 </html>
