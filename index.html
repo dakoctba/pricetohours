@@ -53,16 +53,17 @@
             <form action="">
                 <div class="row">
                     <div class="column">
-                        <label for="cost"><small><i>Cost of the item you want to buy</i></small></label>
+                        <label for="cost"><i>Cost of the item you want to buy</i></label>
                         <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy" v-model="cost" @keyup="calc">
                     </div>
                     <div class="column">
-                        <label for="wage"><small><i>Your hourly wage</i></small></label>
+                        <label for="wage"><i>Your hourly wage</i></label>
                         <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
                     </div>
                 </div>
                 <div class="result center" v-show="show">
-                    <h3>You need to work <span>{{ hours }} hours</span> to buy this item (about <span>{{ days }} days</span>)</h3>
+                    <h3>You need to work <span>{{ hours }} hours</span> to buy this item (about <span>{{ days }} days*</span>)</h3>
+                    <p><small>* If you work 8 hours per day</small></p>
                 </div>
             </form>
 
