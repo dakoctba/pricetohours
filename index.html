@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Assistant&display=swap" rel="stylesheet">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6135599490918760" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <style>
     * {
@@ -28,15 +28,16 @@
     .container {
         padding: 20px;
     }
-    form {
+    .form {
         padding: 20px;
+        margin: 20px 0px;
         background-color: #f8f8f8;
         border-radius: 4px;
     }
     .center {
         text-align: center;
     }
-    .result span {
+    .result span.detail {
         color: #ff6600;
         font-weight: bold;
     }
@@ -50,7 +51,7 @@
 
             <h1 class="center">Price to hours worked calculator</h1>
 
-            <form action="">
+            <div class="form">
                 <div class="row">
                     <div class="column">
                         <label for="cost"><i>Cost of the item you want to buy</i></label>
@@ -61,22 +62,20 @@
                         <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
                     </div>
                 </div>
-                <div class="result center" v-show="show">
-                    <h3>You need to work <span>{{ hours }} hours</span> to buy this item (about <span>{{ days }} days*</span>)</h3>
+                <div class="result center" v-show="hours > 0">
+                    <h3>You need to work <span class="detail">{{ hours }} hours</span> to buy this item (about <span class="detail">{{ days }} days</span>*)</h3>
                     <p><small>* If you work 8 hours per day</small></p>
                 </div>
-            </form>
+            </div>
 
             <p>If you ever wondered how many hours you would have to work to buy something you want, this price-to-hours worked calculator has an answer for you.</p>
-
-            <div id="calculator"></div>
 
             <p>If you want to manage your finances successfully, you need to be mindful of your purchasing decisions. That means carefully considering the costs and the benefits of any purchase you’re considering. Will the benefits you get from buying this item be worth the cost, considering the amount of money I have?</p>
 
             <p>One of the most effective ways to evaluate cost is to consider the number of working hours a purchase is worth. We created this price to hours worked calculator to help you do just that.</p>
 
             <div>
-                <h2>How does this help me?</h2>
+                <h3>How does this help me?</h3>
 
                 <p>So you want that new PlayStation, and you want it really bad. You love that tall and curvy look, but you’re not in love with that $500 price tag. You’re weighing whether you should splurge and actually buy it.</p>
 
@@ -86,11 +85,39 @@
                 </ul>
             </div>
 
-            <h2>Not sure what your hourly wage is?</h2>
+            <h3>Not sure what your hourly wage is?</h3>
 
             <p>Use the calculator below to convert your annual salary, monthly, weekly, or daily wages into an hourly rate.</p>
 
-            <p id="hourly_wage"></p>
+            <div class="form">
+                <h4>Calculate my hourly rate based on</h4>
+                <div class="row">
+                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="annual"> Annual salary</div>
+                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="monthly"> Monthly wage*</div>
+                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="weekly"> Weekly wage</div>
+                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="daily"> Daily wage</div>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <label for="baseSalary"><i>{{ message }}</i></label>
+                        <input type="number" min="0" step="any" name="baseSalary" id="baseSalary" v-model="baseSalary" @keyup="calcHourlyRate">
+                    </div>
+                    <div class="column">
+                        <label for="workedHoursPerDay"><i>How many hours do you work per day?</i></label>
+                        <input type="number" min="0" step="any" name="workedHoursPerDay" id="workedHoursPerDay" v-model="workedHoursPerDay" @keyup="calcHourlyRate">
+                    </div>
+                    <div class="column">
+                        <label for="workedDaysPerWeek"><i>How many days do you work per week?</i></label>
+                        <input type="number" min="0" step="any" name="workedDaysPerWeek" id="workedDaysPerWeek" v-model="workedDaysPerWeek" @keyup="calcHourlyRate">
+                    </div>
+                </div>
+
+                <div class="result center" v-show="hourlyWage > 0">
+                    <h3>Your hourly wage is <span class="detail">$ {{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
+                    <p v-show="isMonthlyWage"><small>Since each month has a different number of work days we calculate your hourly rate based on your average weekly earnings (monthly wage*12/52)</small></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -104,9 +131,15 @@ createApp({
         return {
             cost: 0.00,
             wage: 0.00,
-            show: false,
             hours: 0,
             days: 0,
+            base: "annual",
+            message: "Your annual salary",
+            baseSalary: 0,
+            workedHoursPerDay: 8,
+            workedDaysPerWeek: 5,
+            hourlyWage: 0,
+            isMonthlyWage: false,
         }
     },
     methods: {
@@ -115,10 +148,32 @@ createApp({
                 if (this.cost > 0 && this.wage > 0) {
                     this.hours = Math.round((this.cost / this.wage + Number.EPSILON) * 100) / 100;
                     this.days = Math.round((this.hours / 8 + Number.EPSILON) * 100) / 100;
-                    this.show = true;
                 }
             } catch (error) {
-                this.show = false;
+                this.hours = 0;
+                this.days = 0;
+            }
+        },
+        calcHourlyRate() {
+            try {
+                this.message = this.base == 'annual' ? "Your annual salary" : `Your ${this.base} wage`;
+                this.isMonthlyWage = this.base == 'monthly';
+
+                if (this.base == 'annual') {
+                    let result = (this.baseSalary / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
+                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                } else if (this.base == 'monthly') {
+                    let result = (this.baseSalary * 12 / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
+                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                } else if (this.base == 'weekly') {
+                    let result = this.baseSalary / this.workedDaysPerWeek / this.workedHoursPerDay;
+                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                } else {
+                    let result = this.baseSalary / this.workedHoursPerDay;
+                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                }
+            } catch (error) {
+                this.hourlyWage = 0;
             }
         }
     }
