@@ -41,6 +41,9 @@
         color: #ff6600;
         font-weight: bold;
     }
+    .mt-3 {
+        margin-top: 3rem;
+    }
 </style>
 <body>
 
@@ -62,7 +65,7 @@
                         <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
                     </div>
                 </div>
-                <div class="result center" v-show="hours > 0">
+                <div class="result center mt-3" v-show="hours > 0">
                     <h3>You need to work <span class="detail">{{ hours }} hours</span> to buy this item (about <span class="detail">{{ days }} days</span>*)</h3>
                     <p><small>* If you work 8 hours per day</small></p>
                 </div>
@@ -91,6 +94,7 @@
 
             <div class="form">
                 <h4>Calculate my hourly rate based on</h4>
+
                 <div class="row">
                     <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="annual"> Annual salary</div>
                     <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="monthly"> Monthly wage*</div>
@@ -98,7 +102,7 @@
                     <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="daily"> Daily wage</div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-3">
                     <div class="column">
                         <label for="baseSalary"><i>{{ message }}</i></label>
                         <input type="number" min="0" step="any" name="baseSalary" id="baseSalary" v-model="baseSalary" @keyup="calcHourlyRate">
@@ -113,7 +117,7 @@
                     </div>
                 </div>
 
-                <div class="result center" v-show="hourlyWage > 0">
+                <div class="result center mt-3" v-show="hourlyWage > 0">
                     <h3>Your hourly wage is <span class="detail">$ {{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
                     <p v-show="isMonthlyWage"><small>Since each month has a different number of work days we calculate your hourly rate based on your average weekly earnings (monthly wage*12/52)</small></p>
                 </div>
@@ -159,19 +163,19 @@ createApp({
                 this.message = this.base == 'annual' ? "Your annual salary" : `Your ${this.base} wage`;
                 this.isMonthlyWage = this.base == 'monthly';
 
+                let result = 0;
+
                 if (this.base == 'annual') {
-                    let result = (this.baseSalary / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
-                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                    result = (this.baseSalary / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
                 } else if (this.base == 'monthly') {
-                    let result = (this.baseSalary * 12 / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
-                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                    result = (this.baseSalary * 12 / 52) / this.workedDaysPerWeek / this.workedHoursPerDay;
                 } else if (this.base == 'weekly') {
-                    let result = this.baseSalary / this.workedDaysPerWeek / this.workedHoursPerDay;
-                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                    result = this.baseSalary / this.workedDaysPerWeek / this.workedHoursPerDay;
                 } else {
-                    let result = this.baseSalary / this.workedHoursPerDay;
-                    this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
+                    result = this.baseSalary / this.workedHoursPerDay;
                 }
+
+                this.hourlyWage = Math.round((result + Number.EPSILON) * 100) / 100;
             } catch (error) {
                 this.hourlyWage = 0;
             }
