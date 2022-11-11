@@ -54,14 +54,14 @@
                 <div class="row">
                     <div class="column">
                         <label for="cost"><small><i>Cost of the item you want to buy</i></small></label>
-                        <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy">
+                        <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy" v-model="cost" @keyup="calc">
                     </div>
                     <div class="column">
                         <label for="wage"><small><i>Your hourly wage</i></small></label>
-                        <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage">
+                        <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
                     </div>
                 </div>
-                <div class="result center">
+                <div class="result center" v-show="show">
                     <h3>You need to work <span>{{ hours }} hours</span> to buy this item (about <span>{{ days }} days</span>)</h3>
                 </div>
             </form>
@@ -96,16 +96,32 @@
 
 <p class="center"><small><small><a href="https://www.flaticon.com/free-icons/time-is-money" title="time-is-money icons">Time-is-money icons created by Iconjam - Flaticon</a></small></small></p>
 <script>
-    const { createApp } = Vue
+const { createApp } = Vue
 
-    createApp({
-      data() {
+createApp({
+    data() {
         return {
-            hours: '20',
-            days: '2',
+            cost: 0.00,
+            wage: 0.00,
+            show: false,
+            hours: 0,
+            days: 0,
         }
-      }
-    }).mount('#app')
+    },
+    methods: {
+        calc() {
+            try {
+                if (this.cost > 0 && this.wage > 0) {
+                    this.hours = Math.round((this.cost / this.wage + Number.EPSILON) * 100) / 100;
+                    this.days = Math.round((this.hours / 8 + Number.EPSILON) * 100) / 100;
+                    this.show = true;
+                }
+            } catch (error) {
+                this.show = false;
+            }
+        }
+    }
+}).mount('#app')
 </script>
 </body>
 </html>
