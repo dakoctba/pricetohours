@@ -44,86 +44,170 @@
     .mt-3 {
         margin-top: 3rem;
     }
+    .new {
+        background-color: lightyellow;
+    }
+
+    /* .block-1 { } */
+    /* .block-2 { } */
+    /* .block-3 { } */
 </style>
 <body>
 
-<div class="container" id="app">
-    <div class="row">
-        <div class="column">
-            <p class="center"><img src="./assets/images/time-is-money.png" height="100"></p>
+<div id="app">
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <p class="center"><img src="./assets/images/time-is-money.png" height="100"></p>
 
-            <h1 class="center">Price to hours worked calculator</h1>
+                    <h1 class="center">Price to hours worked calculator</h1>
 
-            <div class="form">
-                <div class="row">
-                    <div class="column">
-                        <label for="cost"><i>Cost of the item you want to buy</i></label>
-                        <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy" v-model="cost" @keyup="calc">
+                    <div class="form mt-3">
+                        <div class="row">
+                            <div class="column">
+                                <label for="cost"><i>Cost of the item you want to buy</i></label>
+                                <input type="number" min="0" step="any" id="cost" name="cost" placeholder="Cost of the item you want to buy" v-model="cost" @keyup="calc">
+                            </div>
+                            <div class="column">
+                                <label for="wage"><i>Your hourly wage</i></label>
+                                <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
+                            </div>
+                        </div>
+                        <div class="result center mt-3" v-show="hours > 0">
+                            <h3>You need to work <span class="detail">{{ hours }} hours</span> to buy this item (about <span class="detail">{{ days }} days</span>*)</h3>
+                            <p><small>* If you work 8 hours per day</small></p>
+                        </div>
                     </div>
-                    <div class="column">
-                        <label for="wage"><i>Your hourly wage</i></label>
-                        <input type="number" min="0" step="any" id="wage" name="wage" placeholder="Your hourly wage" v-model="wage" @keyup="calc">
-                    </div>
-                </div>
-                <div class="result center mt-3" v-show="hours > 0">
-                    <h3>You need to work <span class="detail">{{ hours }} hours</span> to buy this item (about <span class="detail">{{ days }} days</span>*)</h3>
-                    <p><small>* If you work 8 hours per day</small></p>
-                </div>
-            </div>
-
-            <p>If you ever wondered how many hours you would have to work to buy something you want, this price-to-hours worked calculator has an answer for you.</p>
-
-            <p>If you want to manage your finances successfully, you need to be mindful of your purchasing decisions. That means carefully considering the costs and the benefits of any purchase you’re considering. Will the benefits you get from buying this item be worth the cost, considering the amount of money I have?</p>
-
-            <p>One of the most effective ways to evaluate cost is to consider the number of working hours a purchase is worth. We created this price to hours worked calculator to help you do just that.</p>
-
-            <div>
-                <h3>How does this help me?</h3>
-
-                <p>So you want that new PlayStation, and you want it really bad. You love that tall and curvy look, but you’re not in love with that $500 price tag. You’re weighing whether you should splurge and actually buy it.</p>
-
-                <ul>
-                    <li>So let’s say that you work full time and earn $30/hour. You would need to work 17 hours (a little over 2 days) in order to buy that space ship looking fun machine.</li>
-                    <li>Now imagine that you work full time but earn $11/hour. You would have to spend 42 hours or just over 5 full days working to earn enough to buy that PlayStation. That might make that the giant inverted Oreo look a lot less appealing!</li>
-                </ul>
-            </div>
-
-            <h3>Not sure what your hourly wage is?</h3>
-
-            <p>Use the calculator below to convert your annual salary, monthly, weekly, or daily wages into an hourly rate.</p>
-
-            <div class="form">
-                <h4>Calculate my hourly rate based on</h4>
-
-                <div class="row">
-                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="annual"> Annual salary</div>
-                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="monthly"> Monthly wage*</div>
-                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="weekly"> Weekly wage</div>
-                    <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="daily"> Daily wage</div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="column">
-                        <label for="baseSalary"><i>{{ message }}</i></label>
-                        <input type="number" min="0" step="any" name="baseSalary" id="baseSalary" v-model="baseSalary" @keyup="calcHourlyRate">
-                    </div>
-                    <div class="column">
-                        <label for="workedHoursPerDay"><i>How many hours do you work per day?</i></label>
-                        <input type="number" min="0" step="any" name="workedHoursPerDay" id="workedHoursPerDay" v-model="workedHoursPerDay" @keyup="calcHourlyRate">
-                    </div>
-                    <div class="column">
-                        <label for="workedDaysPerWeek"><i>How many days do you work per week?</i></label>
-                        <input type="number" min="0" step="any" name="workedDaysPerWeek" id="workedDaysPerWeek" v-model="workedDaysPerWeek" @keyup="calcHourlyRate">
-                    </div>
-                </div>
-
-                <div class="result center mt-3" v-show="hourlyWage > 0">
-                    <h3>Your hourly wage is <span class="detail">$ {{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
-                    <p v-show="isMonthlyWage"><small>Since each month has a different number of work days we calculate your hourly rate based on your average weekly earnings (monthly wage*12/52)</small></p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="block-1">
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <h3>Calculate how many hours you will have to work to pay for something when you want to buy it</h3>
+
+                    <p>If you ever wondered how many hours you would have to work to buy something you want, this price-to-hours worked calculator has an answer for you.</p>
+
+                    <p>If you want to manage your finances successfully, you need to be mindful of your purchasing decisions. That means carefully considering the costs and the benefits of any purchase you're considering. Will the benefits you get from buying this item be worth the cost, considering the amount of money I have?</p>
+
+                    <p>One of the most effective ways to evaluate cost is to consider the number of working hours a purchase is worth. We created this price to hours worked calculator to help you do just that.</p>
+
+                    <p>If you make impulse spending decisions, this is a great trick to think twice about its value.</p>
+
+                    <div>
+                        <h3>How does this help me?</h3>
+
+                        <p>So you want that new PlayStation, and you want it really bad. You love that tall and curvy look, but you're not in love with that $500 price tag. You're weighing whether you should splurge and actually buy it.</p>
+
+                        <ul>
+                            <li>So let's say that you work full time and earn $30/hour. You would need to work 17 hours (a little over 2 days) in order to buy that space ship looking fun machine.</li>
+                            <li>Now imagine that you work full time but earn $11/hour. You would have to spend 42 hours or just over 5 full days working to earn enough to buy that PlayStation. That might make that the giant inverted Oreo look a lot less appealing!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="block-2">
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <h3>Not sure what your hourly wage is?</h3>
+
+                    <p>Use the calculator below to convert your annual salary, monthly, weekly, or daily wages into an hourly rate. Calculate your own true hourly "wage" and use it to stop and think before your next purchase.</p>
+
+                    <div class="form">
+                        <h4>Calculate my hourly rate based on</h4>
+
+                        <div class="row">
+                            <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="annual">&nbsp;Annual salary</div>
+                            <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="monthly">&nbsp;Monthly wage*</div>
+                            <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="weekly">&nbsp;Weekly wage</div>
+                            <div class="column"><input type="radio" id="base" v-model="base" @change="calcHourlyRate" value="daily">&nbsp;Daily wage</div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="column">
+                                <label for="baseSalary"><i>{{ message }}</i></label>
+                                <input type="number" min="0" step="any" name="baseSalary" id="baseSalary" v-model="baseSalary" @keyup="calcHourlyRate">
+                            </div>
+                            <div class="column">
+                                <label for="workedHoursPerDay"><i>How many hours do you work per day?</i></label>
+                                <input type="number" min="0" step="any" name="workedHoursPerDay" id="workedHoursPerDay" v-model="workedHoursPerDay" @keyup="calcHourlyRate">
+                            </div>
+                            <div class="column">
+                                <label for="workedDaysPerWeek"><i>How many days do you work per week?</i></label>
+                                <input type="number" min="0" step="any" name="workedDaysPerWeek" id="workedDaysPerWeek" v-model="workedDaysPerWeek" @keyup="calcHourlyRate">
+                            </div>
+                        </div>
+
+                        <div class="result center mt-3" v-show="hourlyWage > 0">
+                            <h3>Your hourly wage is <span class="detail">$ {{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
+                            <p v-show="isMonthlyWage"><small>Since each month has a different number of work days we calculate your hourly rate based on your average weekly earnings (monthly wage*12/52)</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="block-3">
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <h3>How Much Time Will This Cost Me?</h3>
+
+                    <p>Whenever you purchase something, you trade money for that item or experience. At that moment, the trade seems worth it (otherwise you would not purchase it). But have you ever considered what you are actually ultimately trading? Have you ever asked yourself "How much time will this cost me?"</p>
+
+                    <p>For the vast majority of people, money represents time they traded in order to get paid. That part can be easy to forget. (If you've found a way to get paid for offering nothing, please shoot me a message and tell the world your secret).</p>
+
+                    <p>Purchases happen in the present, right at the second you make them. You feel that part, and since there's an immediate association the "price" we view in dollars.</p>
+
+                    <p>However, you paid for that dollar with time, by working to earn it.</p>
+
+                    <p>If you're spending money you actually have, you're spending hours you've already worked. However, if you're paying with debt you're literally trading your future time for a purchase today. The bill will come due. It always needs to be paid.</p>
+
+                    <p>In the book <a href="https://www.amazon.com/gp/product/0143115766">Your Money or Your Life</a> (by Joe Dominguez and Vicki Robin) they explain "Money is something we choose to trade our life energy for. Our life energy is our allotment of time here on earth, the precious life available to us. When we go to our jobs we are trading our life energy for money".</p>
+
+                    <p>It's not as simple as you might think.</p>
+
+                    <p>Say you make $ 20 an hour, and something costs $ 20. You might argue that it will take an hour to get that item. That's one way of looking at it, but I would argue that's not true for your life.</p>
+
+                    <p>There are things you HAVE to buy. A roof over your head, groceries, utilities like heat/electricity. To be healthy and safe, you need them.</p>
+
+                    <p>Let's walk through a very simplified example.</p>
+
+                    <p>Joe makes $ 20 an hour (let's pretend that's after taxes for simplicity). He works 40 hour weeks. Therefore in a month Joe makes $ 3200 ($ 20 x 40 hours x 4 weeks).</p>
+
+                    <p>Joe's rent costs $ 1000, food costs $ 400, and utilities are $ 150. His necessary bills come to $ 1550.</p>
+
+                    <p>Therefore, out of the $ 3200 that Joe earns monthly he only actually has $1650 left to "choose" with. Divide that $1650 by Joe's hours worked (160) and Joe makes $ 10.31 hourly that he actually has the ability to spend somewhere.</p>
+
+                    <ul>
+                        <li>All of a sudden that $ 20 item actually costs Joe approximately 2 hours.</li>
+                        <li>A $5 latte costs Joe approximately 30 minutes.</li>
+                    </ul>
+
+                    <blockquote>
+                        <p>As always, I'm not suggesting that the item or latte aren't worth trading that much of your life. It's personal finance, and the choice is yours. I'm just saying stop and decide for yourself whether they actually are.</p>
+                    </blockquote>
+
+                    <p>Calculate your own "true" hourly wage and use it to stop and think before your next purchase. How much time will this cost me?</p>
+
+                    <p>If there's one thing I hate wasting above all other things, it's time.</p>
+
+                    <p>You have no idea how much time you get. You may be able to calculate your salary and make guesses about your income, but you will never know how much time you have left.</p>
+
+                    <h4>Don't waste your money on things that aren't worth your life. That's ultimately what you're paying with after all.</h4>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <p class="center"><small><small><a href="https://www.flaticon.com/free-icons/time-is-money" title="time-is-money icons">Time-is-money icons created by Iconjam - Flaticon</a></small></small></p>
