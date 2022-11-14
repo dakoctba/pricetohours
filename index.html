@@ -22,6 +22,11 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <style>
+    /*
+    gold: #fdb927
+    purple: #552583
+    black: #000000
+    */
     * {
         font-family: 'Assistant', sans-serif;
     }
@@ -38,7 +43,7 @@
         text-align: center;
     }
     .result span.detail {
-        color: #ff6600;
+        color: #fdb927;
         font-weight: bold;
     }
     .mt-3 {
@@ -48,14 +53,45 @@
         background-color: lightyellow;
     }
 
-    /* .block-1 { } */
-    /* .block-2 { } */
+    section {
+        padding: 40px 0px;
+    }
+
+    .block-header {
+        background-color: #552583;
+        color: #ffffff;
+    }
+    .form {
+        background-color: #ffffff;
+        color: #552583;
+    }
+
+    .block-1, .block-3 {
+        background-color: #ffffff;
+        color: #552583;
+    }
+
+    .block-2 {
+        background-color: #fdb927;
+        color: #000000;
+    }
+
+    .blockquote {
+        color: #fdb927;
+        background-color: #552583;
+        border-radius: 4px;
+        padding: 40px 0px 20px 0px;
+        text-align: center;
+        font-size: 2rem;
+        margin: 40px 0px;
+    }
+
     /* .block-3 { } */
 </style>
 <body>
 
 <div id="app">
-    <section class="header">
+    <section class="block-header">
         <div class="container">
             <div class="row">
                 <div class="column">
@@ -147,7 +183,7 @@
                         </div>
 
                         <div class="result center mt-3" v-show="hourlyWage > 0">
-                            <h3>Your hourly wage is <span class="detail">$ {{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
+                            <h3>Your hourly wage is <span class="detail">${{ hourlyWage }}</span><span v-show="isMonthlyWage">*</span></h3>
                             <p v-show="isMonthlyWage"><small>Since each month has a different number of work days we calculate your hourly rate based on your average weekly earnings (monthly wage*12/52)</small></p>
                         </div>
                     </div>
@@ -176,26 +212,26 @@
 
                     <p>It's not as simple as you might think.</p>
 
-                    <p>Say you make $ 20 an hour, and something costs $ 20. You might argue that it will take an hour to get that item. That's one way of looking at it, but I would argue that's not true for your life.</p>
+                    <p>Say you make $20 an hour, and something costs $20. You might argue that it will take an hour to get that item. That's one way of looking at it, but I would argue that's not true for your life.</p>
 
                     <p>There are things you HAVE to buy. A roof over your head, groceries, utilities like heat/electricity. To be healthy and safe, you need them.</p>
 
                     <p>Let's walk through a very simplified example.</p>
 
-                    <p>Joe makes $ 20 an hour (let's pretend that's after taxes for simplicity). He works 40 hour weeks. Therefore in a month Joe makes $ 3200 ($ 20 x 40 hours x 4 weeks).</p>
+                    <p>Joe makes $20 an hour (let's pretend that's after taxes for simplicity). He works 40 hour weeks. Therefore in a month Joe makes $3200 ($20 x 40 hours x 4 weeks).</p>
 
-                    <p>Joe's rent costs $ 1000, food costs $ 400, and utilities are $ 150. His necessary bills come to $ 1550.</p>
+                    <p>Joe's rent costs $1000, food costs $400, and utilities are $150. His necessary bills come to $1550.</p>
 
-                    <p>Therefore, out of the $ 3200 that Joe earns monthly he only actually has $1650 left to "choose" with. Divide that $1650 by Joe's hours worked (160) and Joe makes $ 10.31 hourly that he actually has the ability to spend somewhere.</p>
+                    <p>Therefore, out of the $3200 that Joe earns monthly he only actually has $1650 left to "choose" with. Divide that $1650 by Joe's hours worked (160) and Joe makes $10.31 hourly that he actually has the ability to spend somewhere.</p>
 
                     <ul>
-                        <li>All of a sudden that $ 20 item actually costs Joe approximately 2 hours.</li>
+                        <li>All of a sudden that $20 item actually costs Joe approximately 2 hours.</li>
                         <li>A $5 latte costs Joe approximately 30 minutes.</li>
                     </ul>
 
-                    <blockquote>
+                    <div class="blockquote">
                         <p>As always, I'm not suggesting that the item or latte aren't worth trading that much of your life. It's personal finance, and the choice is yours. I'm just saying stop and decide for yourself whether they actually are.</p>
-                    </blockquote>
+                    </div>
 
                     <p>Calculate your own "true" hourly wage and use it to stop and think before your next purchase. How much time will this cost me?</p>
 
